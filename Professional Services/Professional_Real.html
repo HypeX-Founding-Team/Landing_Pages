@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LeadMatrix for Professional Services — HypeX</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#111111;--surface:#1A1A1A;--card:#1F1F1F;
+    --gold:#C9A84C;--gold-light:#E8C97A;--cream:#F5F0E8;
+    --muted:rgba(245,240,232,0.45);--border:rgba(255,255,255,0.07);
+    --green:#22C55E;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--cream);font-family:'DM Sans',sans-serif;overflow-x:hidden;}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:clamp(12px,2vw,20px) clamp(16px,5vw,56px);display:flex;justify-content:space-between;align-items:center;background:rgba(17,17,17,0.93);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,168,76,0.15);}
+  .logo{font-family:'DM Serif Display',serif;font-size:clamp(20px,2.5vw,26px);color:var(--cream);letter-spacing:1px;}
+  .logo em{color:var(--gold);font-style:normal;}
+  .nav-right{display:flex;align-items:center;gap:clamp(12px,2vw,28px);}
+  .nav-link{font-size:13px;color:var(--muted);text-decoration:none;letter-spacing:0.5px;transition:color 0.2s;}
+  .nav-link:hover{color:var(--cream);}
+  .nav-cta{background:var(--gold);color:#111;padding:9px clamp(14px,2vw,22px);font-size:clamp(11px,1.2vw,13px);font-weight:700;letter-spacing:0.5px;text-decoration:none;white-space:nowrap;transition:background 0.2s;}
+  .nav-cta:hover{background:var(--gold-light);}
+
+  /* HERO */
+  .hero{background:var(--bg);padding:clamp(100px,14vw,160px) clamp(16px,5vw,56px) clamp(56px,8vw,100px);}
+  .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,4vw,60px);align-items:center;}
+  .profession-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:clamp(20px,2.5vw,32px);}
+  .profession-tag{font-size:clamp(9px,0.9vw,11px);font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,168,76,0.3);padding:4px 12px;}
+  .hero-headline{font-family:'DM Serif Display',serif;font-size:clamp(32px,5vw,60px);line-height:1.1;color:var(--cream);margin-bottom:clamp(16px,2vw,28px);}
+  .hero-headline em{color:var(--gold);font-style:italic;}
+  .hero-subhead{font-size:clamp(15px,1.5vw,18px);color:var(--muted);line-height:1.65;margin-bottom:clamp(28px,3vw,40px);max-width:520px;}
+  .hero-subhead strong{color:var(--cream);}
+  .hero-cta-primary{display:inline-block;background:var(--gold);color:#111;padding:clamp(14px,1.6vw,18px) clamp(24px,2.5vw,36px);font-size:clamp(13px,1.3vw,15px);font-weight:700;text-decoration:none;letter-spacing:0.3px;transition:background 0.2s;}
+  .hero-cta-primary:hover{background:var(--gold-light);}
+  .hero-cta-note{font-size:clamp(11px,1.1vw,13px);color:var(--muted);margin-top:10px;}
+  .visual-label{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+  .enquiry-visual{display:flex;flex-direction:column;gap:2px;}
+  .enquiry-card{background:var(--card);border:1px solid var(--border);padding:clamp(16px,1.8vw,20px) clamp(18px,2vw,24px);}
+  .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px;}
+  .card-name{font-size:clamp(13px,1.3vw,15px);font-weight:600;color:var(--cream);margin-bottom:3px;}
+  .card-type{font-size:clamp(11px,1.1vw,13px);color:var(--muted);}
+  .card-status{font-size:10px;font-weight:700;letter-spacing:1px;padding:3px 9px;white-space:nowrap;}
+  .card-footer{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);padding-top:10px;}
+  .card-response{font-size:clamp(11px,1.1vw,13px);color:var(--green);}
+  .card-time{font-size:clamp(11px,1.1vw,12px);color:var(--muted);}
+
+  /* PROFESSIONS */
+  .professions{background:var(--surface);padding:clamp(32px,4vw,60px) clamp(16px,5vw,56px);}
+  .prof-label{font-size:clamp(10px,1vw,12px);letter-spacing:3px;text-transform:uppercase;color:var(--muted);text-align:center;margin-bottom:clamp(20px,2.5vw,32px);}
+  .prof-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;}
+  .prof-item{background:var(--card);padding:clamp(18px,2vw,28px) clamp(14px,1.5vw,20px);text-align:center;border:1px solid var(--border);}
+  .prof-icon{font-size:clamp(22px,2.5vw,32px);margin-bottom:10px;}
+  .prof-name{font-size:clamp(12px,1.2vw,15px);font-weight:700;color:var(--cream);margin-bottom:6px;}
+  .prof-prob{font-size:clamp(10px,1vw,12px);color:var(--muted);line-height:1.4;}
+
+  /* PAIN */
+  .pain{background:var(--bg);padding:clamp(48px,8vw,120px) clamp(16px,5vw,56px);}
+  .section-eyebrow{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:clamp(12px,1.5vw,20px);}
+  .section-headline{font-family:'DM Serif Display',serif;font-size:clamp(28px,4.5vw,56px);line-height:1.1;color:var(--cream);margin-bottom:clamp(32px,4vw,56px);}
+  .section-headline em{color:var(--gold);}
+  .pain-list{display:flex;flex-direction:column;gap:0;}
+  .pain-row{display:grid;grid-template-columns:80px 1fr;align-items:start;padding:clamp(24px,3vw,40px) 0;border-bottom:1px solid var(--border);}
+  .pain-num{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--muted);padding-top:4px;}
+  .pain-text h3{font-size:clamp(16px,1.6vw,20px);font-weight:700;color:var(--cream);margin-bottom:10px;}
+  .pain-text p{font-size:clamp(14px,1.4vw,17px);color:var(--muted);line-height:1.65;}
+
+  /* MECHANISM */
+  .mechanism{background:var(--surface);padding:clamp(48px,8vw,120px) clamp(16px,5vw,56px);}
+  .mech-intro{max-width:760px;margin:0 auto clamp(40px,5vw,72px);text-align:center;}
+  .mech-intro p{font-family:'DM Serif Display',serif;font-size:clamp(20px,2.5vw,32px);line-height:1.45;color:var(--cream);border-left:3px solid var(--gold);padding-left:clamp(16px,2vw,28px);text-align:left;}
+  .mech-intro p strong{color:var(--gold);}
+  .steps-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;}
+  .step-box{background:var(--card);border:1px solid var(--border);padding:clamp(24px,3vw,40px) clamp(20px,2.5vw,32px);position:relative;}
+  .step-box::before{content:attr(data-step);font-size:80px;font-weight:900;color:rgba(201,168,76,0.05);position:absolute;top:10px;right:16px;line-height:1;}
+  .step-box-icon{font-size:clamp(22px,2.5vw,30px);margin-bottom:14px;}
+  .step-box h3{font-size:clamp(15px,1.5vw,18px);font-weight:700;color:var(--cream);margin-bottom:10px;}
+  .step-box p{font-size:clamp(13px,1.3vw,15px);color:var(--muted);line-height:1.65;}
+
+  /* VALUE STACK */
+  .value-stack{background:var(--bg);padding:clamp(48px,8vw,120px) clamp(16px,5vw,56px);}
+  .tier-table{width:100%;border-collapse:collapse;margin:clamp(28px,3vw,48px) 0;}
+  .tier-table th,.tier-table td{padding:clamp(12px,1.5vw,18px) clamp(14px,1.8vw,24px);border-bottom:1px solid var(--border);text-align:left;font-size:clamp(12px,1.2vw,14px);}
+  .tier-table thead th{font-weight:700;color:var(--cream);background:var(--surface);}
+  .tier-table tbody td:first-child{color:var(--muted);}
+  .tier-tag{font-size:11px;font-weight:700;letter-spacing:1px;padding:4px 10px;display:inline-block;}
+  .check{color:var(--gold);font-weight:700;}
+
+  /* GUARANTEE */
+  .guarantee{background:var(--surface);padding:clamp(48px,8vw,120px) clamp(16px,5vw,56px);}
+  .guarantee-inner{max-width:720px;margin:0 auto;text-align:center;}
+  .g-title{font-family:'DM Serif Display',serif;font-size:clamp(28px,5vw,60px);line-height:1.1;color:var(--cream);margin-bottom:clamp(20px,2.5vw,32px);}
+  .g-title em{color:var(--gold);}
+  .g-body{font-size:clamp(15px,1.5vw,19px);color:var(--muted);line-height:1.7;margin-bottom:clamp(12px,1.5vw,18px);}
+  .g-body strong{color:var(--cream);}
+
+  /* FINAL CTA */
+  .final-cta{background:var(--bg);padding:clamp(48px,8vw,120px) clamp(16px,5vw,56px);text-align:center;}
+  .final-cta h2{font-family:'DM Serif Display',serif;font-size:clamp(32px,5.5vw,68px);line-height:1.1;color:var(--cream);margin-bottom:clamp(16px,2vw,28px);}
+  .final-cta h2 em{color:var(--gold);}
+  .final-desc{font-size:clamp(15px,1.5vw,18px);color:var(--muted);margin-bottom:clamp(28px,3.5vw,48px);max-width:520px;margin-left:auto;margin-right:auto;}
+  .cta-form{display:flex;flex-direction:column;max-width:500px;margin:0 auto clamp(16px,2vw,20px);}
+  .cta-form input{padding:clamp(14px,1.6vw,18px) clamp(16px,2vw,22px);background:rgba(255,255,255,0.04);border:1px solid var(--border);border-bottom:none;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:15px;outline:none;}
+  .cta-form input::placeholder{color:var(--muted);}
+  .cta-form button{padding:clamp(14px,1.6vw,18px) clamp(20px,2.5vw,28px);background:var(--gold);color:#111;border:none;font-family:'DM Sans',sans-serif;font-weight:700;font-size:clamp(13px,1.3vw,14px);letter-spacing:0.5px;cursor:pointer;width:100%;}
+  .cta-form button:hover{background:var(--gold-light);}
+  .trust-bar{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(10px,1.5vw,24px);margin-top:clamp(14px,2vw,20px);}
+  .trust-item{font-size:clamp(11px,1.1vw,13px);color:var(--muted);}
+  .trust-item::before{content:'✓ ';color:var(--gold);font-weight:700;}
+
+  /* FAQ */
+  .faq{background:var(--surface);padding:clamp(40px,6vw,80px) clamp(16px,5vw,56px);max-width:800px;margin:0 auto;}
+  .faq-item{border-bottom:1px solid var(--border);padding:clamp(16px,2vw,24px) 0;cursor:pointer;}
+  .faq-q{font-size:clamp(13px,1.4vw,16px);font-weight:600;color:var(--cream);display:flex;justify-content:space-between;align-items:center;gap:14px;}
+  .faq-q::after{content:'+';color:var(--gold);font-size:20px;flex-shrink:0;}
+  .faq-a{font-size:clamp(13px,1.3vw,15px);color:var(--muted);line-height:1.7;margin-top:12px;display:none;}
+  .faq-item.open .faq-q::after{content:'−';}
+  .faq-item.open .faq-a{display:block;}
+
+  /* FOOTER */
+  footer{background:var(--surface);border-top:1px solid var(--border);padding:clamp(24px,3vw,40px) clamp(16px,5vw,56px);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;}
+  footer p{font-size:clamp(11px,1.1vw,13px);color:var(--muted);}
+
+  .fade-up{opacity:0;transform:translateY(20px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-up.visible{opacity:1;transform:translateY(0);}
+
+  /* TABLET */
+  @media(max-width:960px){
+    .hero-grid{grid-template-columns:1fr;}
+    .enquiry-visual{display:none;}
+    .prof-grid{grid-template-columns:repeat(3,1fr);}
+    .steps-grid{grid-template-columns:1fr;}
+    .tier-table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  }
+
+  /* MOBILE */
+  @media(max-width:640px){
+    .nav-right .nav-link{display:none;}
+    .nav-cta{font-size:11px;padding:8px 14px;}
+    .hero{padding-top:88px;}
+    .prof-grid{grid-template-columns:repeat(2,1fr);}
+    .pain-row{grid-template-columns:56px 1fr;}
+    .steps-grid{grid-template-columns:1fr;}
+    .cta-form input{border-right:none;border-bottom:none;}
+    .cta-form button{width:100%;}
+    .trust-bar{flex-direction:column;align-items:center;}
+    footer{flex-direction:column;text-align:center;}
+  }
+
+  @media(max-width:400px){
+    .prof-grid{grid-template-columns:1fr 1fr;}
+    .hero-headline{font-size:28px;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Hype<em>X</em></div>
+  <div class="nav-right">
+    <a href="#pain" class="nav-link">The Problem</a>
+    <a href="#how" class="nav-link">How It Works</a>
+    <a href="#audit" class="nav-cta">Free Audit →</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="profession-tags">
+        <span class="profession-tag">CA Firms</span>
+        <span class="profession-tag">Financial Consultants</span>
+        <span class="profession-tag">Fitness Coaches</span>
+        <span class="profession-tag">Dietitians</span>
+        <span class="profession-tag">Salons</span>
+      </div>
+      <h1 class="hero-headline">
+        You're Good Enough That<br>
+        Clients Want You.<br>
+        You're <em>Busy Enough</em><br>
+        That They Go Elsewhere.
+      </h1>
+      <p class="hero-subhead">
+        When you're with a client, a new enquiry just arrived. <strong>Nobody responded.</strong> That prospect waited 3 hours, got impatient, and booked with someone who replied in 5 minutes. This happens every single day.
+      </p>
+      <a href="#audit" class="hero-cta-primary">
+        Get My Free Revenue Leak Audit — ₹0
+      </a><br>
+      <div class="hero-cta-note">20 minutes. Zero obligation. We show you the rupee number you're losing monthly.</div>
+    </div>
+
+    <div>
+      <div class="visual-label">Live Enquiry Feed</div>
+      <div class="enquiry-visual">
+        <div class="enquiry-card">
+          <div class="card-top">
+            <div>
+              <div class="card-name">Ananya R. — Fitness Enquiry</div>
+              <div class="card-type">Instagram DM · Weight loss program</div>
+            </div>
+            <div class="card-status" style="background:rgba(34,197,94,0.1);color:#22c55e">HOT</div>
+          </div>
+          <div class="card-footer">
+            <div class="card-response">⚡ Auto-responded · 68 seconds</div>
+            <div class="card-time">Just now</div>
+          </div>
+        </div>
+        <div class="enquiry-card">
+          <div class="card-top">
+            <div>
+              <div class="card-name">Sunita Patel — CA Services</div>
+              <div class="card-type">WhatsApp · GST filing query</div>
+            </div>
+            <div class="card-status" style="background:rgba(201,168,76,0.1);color:#C9A84C">WARM</div>
+          </div>
+          <div class="card-footer">
+            <div class="card-response">⚡ Auto-responded · 1m 12s</div>
+            <div class="card-time">3 mins ago</div>
+          </div>
+        </div>
+        <div class="enquiry-card">
+          <div class="card-top">
+            <div>
+              <div class="card-name">Ramesh K. — Dietitian</div>
+              <div class="card-type">Google · Diabetes management plan</div>
+            </div>
+            <div class="card-status" style="background:rgba(34,197,94,0.1);color:#22c55e">HOT</div>
+          </div>
+          <div class="card-footer">
+            <div class="card-response">⚡ Auto-responded · 94 seconds</div>
+            <div class="card-time">7 mins ago</div>
+          </div>
+        </div>
+        <div class="enquiry-card" style="border-color:rgba(201,168,76,0.2);background:rgba(201,168,76,0.04)">
+          <div class="card-top">
+            <div>
+              <div class="card-name" style="color:#C9A84C">Discovery call booked</div>
+              <div class="card-type">Calendar synced · No manual effort</div>
+            </div>
+            <div class="card-status" style="background:rgba(201,168,76,0.12);color:#C9A84C">BOOKED</div>
+          </div>
+          <div class="card-footer">
+            <div class="card-response" style="color:var(--muted)">Zero team involvement required</div>
+            <div class="card-time">Auto</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROFESSIONS -->
+<section class="professions">
+  <div class="prof-label">If you're in any of these professions — this is for you</div>
+  <div class="prof-grid">
+    <div class="prof-item">
+      <div class="prof-icon">📊</div>
+      <div class="prof-name">CA Firms</div>
+      <div class="prof-prob">Lose clients who called during busy tax season</div>
+    </div>
+    <div class="prof-item">
+      <div class="prof-icon">💰</div>
+      <div class="prof-name">Financial Consultants</div>
+      <div class="prof-prob">Prospects go cold before callback happens</div>
+    </div>
+    <div class="prof-item">
+      <div class="prof-icon">🏋️</div>
+      <div class="prof-name">Fitness Coaches</div>
+      <div class="prof-prob">DMs arrive during sessions — seen 6 hours later</div>
+    </div>
+    <div class="prof-item">
+      <div class="prof-icon">🥗</div>
+      <div class="prof-name">Dietitians</div>
+      <div class="prof-prob">Enquiries during consultations go unanswered</div>
+    </div>
+    <div class="prof-item">
+      <div class="prof-icon">✂️</div>
+      <div class="prof-name">Salons</div>
+      <div class="prof-prob">Booking requests overnight: seen in morning, gone by then</div>
+    </div>
+  </div>
+</section>
+
+<!-- PAIN -->
+<section class="pain" id="pain">
+  <div class="section-eyebrow">The Problem</div>
+  <h2 class="section-headline">
+    You Don't Have<br>a <em>Lead Problem.</em><br>You Have a Response Problem.
+  </h2>
+
+  <div class="pain-list">
+    <div class="pain-row fade-up">
+      <div class="pain-num">01</div>
+      <div class="pain-text">
+        <h3>The Attention Gap</h3>
+        <p>You're with Client A. Client B just enquired on Instagram. By the time you're free — 2 hours later — Client B has booked with someone who responded in 4 minutes. You didn't lose them on price. You lost them on availability of attention.</p>
+      </div>
+    </div>
+    <div class="pain-row fade-up">
+      <div class="pain-num">02</div>
+      <div class="pain-text">
+        <h3>The 8 PM Problem</h3>
+        <p>Professionals typically close their workday. Their potential clients make decisions in the evening — after work, after dinner. That's when your best leads arrive. And that's exactly when nobody's monitoring the inbox.</p>
+      </div>
+    </div>
+    <div class="pain-row fade-up">
+      <div class="pain-num">03</div>
+      <div class="pain-text">
+        <h3>No Qualification Layer</h3>
+        <p>Even when your team does respond, there's no system to separate serious prospects from browsers. Time gets spent equally on everyone. The high-value client who was ready to pay gets the same slow attention as someone who was just curious.</p>
+      </div>
+    </div>
+    <div class="pain-row fade-up">
+      <div class="pain-num">04</div>
+      <div class="pain-text">
+        <h3>Invisible Revenue Loss</h3>
+        <p>You don't know how many enquiries you got last month. You don't know what your response time is. You don't know which platform sends the best clients. The money is leaking — silently — and you don't have the data to know how much.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MECHANISM -->
+<section class="mechanism" id="how">
+  <div class="mech-intro fade-up">
+    <div class="section-eyebrow">The Fix</div>
+    <p>"The answer isn't to hire more people to manage WhatsApp. The answer is to <strong>build a system that never sleeps, never forgets, and never lets a serious prospect go cold.</strong>"</p>
+  </div>
+
+  <div class="steps-grid">
+    <div class="step-box fade-up" data-step="1">
+      <div class="step-box-icon">🔗</div>
+      <h3>Capture Everything, Everywhere</h3>
+      <p>Every enquiry — WhatsApp, Instagram DMs, Google, website forms, calls — captured in a single dashboard. Nothing falls through the cracks, even at 11 PM on a Sunday.</p>
+    </div>
+    <div class="step-box fade-up" data-step="2">
+      <div class="step-box-icon">⚡</div>
+      <h3>Respond in Under 2 Minutes. Always.</h3>
+      <p>Automated, personalised response fires immediately. It's not a generic bot — it acknowledges the specific enquiry, matches your professional tone, and keeps the conversation alive until your team picks it up.</p>
+    </div>
+    <div class="step-box fade-up" data-step="3">
+      <div class="step-box-icon">🎯</div>
+      <h3>Qualify Without Your Team</h3>
+      <p>LeadMatrix asks the right questions: services needed, budget, urgency. It scores each lead hot, warm, or cold. Your team only touches the ones that are ready to hire you.</p>
+    </div>
+    <div class="step-box fade-up" data-step="4">
+      <div class="step-box-icon">📅</div>
+      <h3>Appointment in Calendar. Automatically.</h3>
+      <p>High-intent leads get direct booking links. Discovery calls land in your calendar with full context — no back-and-forth scheduling, no manual coordination.</p>
+    </div>
+  </div>
+</section>
+
+<!-- VALUE STACK -->
+<section class="value-stack">
+  <div class="section-eyebrow fade-up">What You Get</div>
+  <h2 class="section-headline fade-up">Three Levels.<br>One System.<br><em>Zero Lost Clients.</em></h2>
+
+  <table class="tier-table fade-up">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th><div class="tier-tag" style="background:rgba(255,255,255,0.04);color:var(--muted)">Visibility</div></th>
+        <th><div class="tier-tag" style="background:rgba(201,168,76,0.1);color:var(--gold)">Control ⭐</div></th>
+        <th><div class="tier-tag" style="background:rgba(255,255,255,0.04);color:var(--muted)">Autonomous</div></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Unified Lead Dashboard</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+      <tr><td>Under 2-min Auto Response (24/7)</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+      <tr><td>Revenue Leak Detection</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+      <tr><td>Lead Scoring (Hot/Warm/Cold)</td><td style="color:var(--muted)">—</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+      <tr><td>Automated Discovery Call Booking</td><td style="color:var(--muted)">—</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+      <tr><td>Multi-Step Follow-Up Sequences</td><td style="color:var(--muted)">—</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+      <tr><td>AI-Personalised Message Copy</td><td style="color:var(--muted)">—</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+      <tr><td>24/7 AI Agents (Zero Human Trigger)</td><td style="color:var(--muted)">—</td><td style="color:var(--muted)">—</td><td><span class="check">✓</span></td></tr>
+      <tr><td>Revenue Forecasting</td><td style="color:var(--muted)">—</td><td style="color:var(--muted)">—</td><td><span class="check">✓</span></td></tr>
+      <tr><td>Repeat Client Recognition</td><td style="color:var(--muted)">—</td><td style="color:var(--muted)">—</td><td><span class="check">✓</span></td></tr>
+    </tbody>
+  </table>
+
+  <div style="text-align:center;" class="fade-up">
+    <a href="#audit" class="hero-cta-primary" style="display:inline-block;">
+      Find Out Which Level You Need → Free Audit
+    </a>
+  </div>
+</section>
+
+<!-- GUARANTEE -->
+<section class="guarantee">
+  <div class="guarantee-inner fade-up">
+    <div class="section-eyebrow" style="justify-content:center;margin-bottom:28px;">Our Commitment</div>
+    <h2 class="g-title">We Show You the<br>Leak <em>Before</em> You<br>Spend Anything.</h2>
+    <p class="g-body">
+      We run a free Revenue Leak Audit on your current setup. We map your enquiry flow, your response times, and your drop-off points.
+    </p>
+    <p class="g-body">
+      At the end, you get one number: <strong>how much revenue you're losing monthly.</strong> If it's zero — we'll tell you straight. Nothing to fix.
+    </p>
+    <p class="g-body" style="color:var(--gold);font-weight:600;">
+      If it's not zero — and it's always not zero — you'll know exactly what LeadMatrix fixes and what it costs versus what it recovers.
+    </p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="final-cta" id="audit">
+  <div class="section-eyebrow" style="justify-content:center;margin-bottom:24px;">Book Your Free Audit</div>
+  <h2>Stop Losing Clients<br>to <em>Your Own Calendar.</em></h2>
+  <p class="final-desc">20 minutes. Free. We hand you the rupee number and a clear path to stop the leak.</p>
+
+  <div class="cta-form">
+    <input type="text" placeholder="Your WhatsApp number">
+    <button type="button">Book Free Audit →</button>
+  </div>
+
+  <div class="trust-bar">
+    <div class="trust-item">No credit card</div>
+    <div class="trust-item">20-minute commitment</div>
+    <div class="trust-item">Zero obligation</div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<div class="faq">
+  <div class="section-eyebrow" style="margin-bottom:40px;">Common Questions</div>
+
+  <div class="faq-item">
+    <div class="faq-q">I'm a solo practitioner. Is this overkill?</div>
+    <div class="faq-a">The Visibility tier was built specifically for solo operators. It's one dashboard and one automated response. The audit will tell you if your enquiry volume justifies it — and we've found that even solo practitioners with 20 enquiries per month are losing 6 to 8 of them to response lag.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">Will automated responses feel impersonal to my clients?</div>
+    <div class="faq-a">No. LeadMatrix responses are written in your voice, acknowledge the specific enquiry, and are designed to feel like a thoughtful first message from your practice — not a generic autoresponse. Most prospects can't tell the difference between a well-crafted automated response and a human one sent within 90 seconds.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">How does the booking automation work with my calendar?</div>
+    <div class="faq-a">We integrate with Google Calendar, Calendly, or your existing booking system. High-intent leads receive a direct scheduling link. The confirmation, reminder, and pre-consultation information are also automated. You open your calendar and find confirmed appointments with full client context.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">How long until I see results?</div>
+    <div class="faq-a">You'll see the first impact within the first week — specifically, the number of enquiries that received a response versus before. Most clients report a measurable increase in appointment bookings within the first 30 days of the Visibility tier being live.</div>
+  </div>
+</div>
+
+<footer>
+  <div class="logo">Hype<em>X</em></div>
+  <p>© 2025 HypeX. Revenue Operating Systems for Indian Businesses.</p>
+  <p style="color:var(--gold);font-size:13px;">LeadMatrix | Professional Services</p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+</script>
+</body>
+</html>

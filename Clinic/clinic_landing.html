@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LeadMatrix for Clinics — HypeX</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Source+Serif+4:ital,wght@0,300;0,400;1,300;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F8FAFB;--surface:#FFFFFF;--dark:#0A3D62;--teal:#0E6655;
+    --sky:#2980B9;--alert:#E74C3C;--text:#1A2530;--muted:#6B7F8E;
+    --border:#E2EBF0;--card:#F0F4F7;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--text);font-family:'Source Serif 4','Georgia',serif;overflow-x:hidden;}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:clamp(12px,2vw,18px) clamp(16px,5vw,56px);display:flex;justify-content:space-between;align-items:center;background:rgba(248,250,251,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);}
+  .logo{font-family:'Syne',sans-serif;font-size:clamp(18px,2.2vw,24px);font-weight:800;color:var(--dark);letter-spacing:-0.5px;}
+  .logo span{color:var(--teal);}
+  .logo sub{font-size:clamp(9px,1vw,11px);font-weight:400;color:var(--muted);margin-left:4px;vertical-align:middle;}
+  .nav-cta{background:var(--dark);color:#fff;padding:9px clamp(14px,2vw,22px);font-family:'Syne',sans-serif;font-size:clamp(11px,1.2vw,13px);font-weight:700;letter-spacing:0.5px;text-decoration:none;white-space:nowrap;}
+
+  /* HERO */
+  .hero{background:var(--dark);padding:clamp(100px,14vw,160px) clamp(16px,5vw,56px) clamp(56px,8vw,100px);}
+  .hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,4vw,60px);align-items:start;}
+  .clinical-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(14,102,85,0.15);border:1px solid rgba(14,102,85,0.3);color:#7DCEA0;font-family:'Syne',sans-serif;font-size:clamp(10px,1vw,12px);font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px clamp(10px,1.2vw,14px) 5px 6px;margin-bottom:clamp(16px,2vw,24px);}
+  .clinical-badge span{background:rgba(14,102,85,0.3);padding:2px 8px;}
+  .hero-headline{font-family:'Syne',sans-serif;font-size:clamp(28px,4.5vw,56px);font-weight:800;line-height:1.1;color:#fff;margin-bottom:clamp(16px,2vw,24px);}
+  .hero-headline mark{background:rgba(14,102,85,0.35);color:#7DCEA0;padding:0 4px;}
+  .hero-subhead{font-size:clamp(15px,1.5vw,18px);color:rgba(255,255,255,0.65);line-height:1.65;margin-bottom:clamp(24px,3vw,36px);}
+  .hero-subhead strong{color:#fff;}
+  .primary-cta{display:inline-block;background:var(--teal);color:#fff;padding:clamp(14px,1.6vw,18px) clamp(20px,2.5vw,32px);font-family:'Syne',sans-serif;font-size:clamp(13px,1.3vw,15px);font-weight:700;letter-spacing:0.5px;text-decoration:none;border:none;cursor:pointer;transition:background 0.2s;}
+  .primary-cta:hover{background:#0b5144;}
+  .cta-proof{font-size:clamp(11px,1.1vw,13px);color:rgba(255,255,255,0.5);margin-top:10px;}
+  .stat-cards{display:flex;flex-direction:column;gap:clamp(10px,1.2vw,14px);}
+  .stat-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);padding:clamp(16px,2vw,22px) clamp(16px,2vw,24px);display:flex;gap:clamp(12px,1.5vw,18px);align-items:center;}
+  .stat-icon{font-size:clamp(20px,2.5vw,28px);width:clamp(40px,4vw,52px);height:clamp(40px,4vw,52px);display:flex;align-items:center;justify-content:center;flex-shrink:0;border-radius:8px;}
+  .stat-card-lbl{font-size:clamp(11px,1.1vw,13px);color:rgba(255,255,255,0.5);margin-bottom:4px;line-height:1.4;}
+  .stat-card-val{font-family:'Syne',sans-serif;font-size:clamp(20px,2.5vw,30px);font-weight:800;line-height:1;}
+  .stat-card-detail{font-size:clamp(10px,1vw,12px);margin-top:3px;}
+
+  /* DIVIDER */
+  .divider-banner{background:var(--teal);padding:clamp(14px,2vw,20px) clamp(16px,5vw,56px);display:flex;flex-wrap:wrap;gap:clamp(12px,2vw,24px);align-items:center;}
+  .banner-item{font-family:'Syne',sans-serif;font-size:clamp(11px,1.1vw,13px);font-weight:700;letter-spacing:0.5px;color:#fff;}
+  .banner-item::before{content:'✓ ';}
+
+  /* PAIN */
+  .pain{background:var(--bg);padding:clamp(48px,8vw,120px) clamp(16px,5vw,56px);}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,72px);align-items:start;}
+  .eyebrow{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--teal);margin-bottom:clamp(12px,1.5vw,20px);}
+  .section-h2{font-family:'Syne',sans-serif;font-size:clamp(26px,4vw,48px);font-weight:800;line-height:1.1;color:var(--dark);margin-bottom:clamp(20px,2.5vw,32px);}
+  .section-h2 em{color:var(--teal);font-style:italic;}
+  .pain-body{font-size:clamp(15px,1.5vw,18px);color:var(--muted);line-height:1.7;margin-bottom:clamp(12px,1.5vw,18px);}
+  .pain-body strong{color:var(--dark);}
+  .data-points{display:flex;flex-direction:column;gap:clamp(10px,1.2vw,14px);}
+  .data-point{display:flex;gap:clamp(14px,1.8vw,20px);align-items:start;background:var(--surface);border:1px solid var(--border);padding:clamp(16px,2vw,22px) clamp(16px,2vw,24px);}
+  .data-point-num{font-family:'Syne',sans-serif;font-size:clamp(20px,2.5vw,28px);font-weight:800;color:var(--teal);min-width:clamp(48px,5vw,64px);flex-shrink:0;}
+  .data-point-label{font-size:clamp(11px,1.1vw,13px);font-weight:700;color:var(--dark);margin-bottom:3px;}
+  .data-point-text{font-size:clamp(12px,1.2vw,14px);color:var(--muted);line-height:1.4;}
+
+  /* MECHANISM */
+  .mechanism{background:var(--dark);padding:clamp(48px,8vw,120px) clamp(16px,5vw,56px);}
+  .mech-header{text-align:center;margin-bottom:clamp(36px,5vw,64px);}
+  .mech-header .section-h2{color:#fff;}
+  .process-track{display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(12px,2vw,20px);margin-bottom:clamp(40px,5vw,72px);position:relative;}
+  .process-step{text-align:center;position:relative;}
+  .process-circle{width:clamp(48px,5vw,64px);height:clamp(48px,5vw,64px);border-radius:50%;background:rgba(255,255,255,0.08);border:2px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:clamp(18px,2vw,24px);margin:0 auto clamp(10px,1.2vw,14px);}
+  .process-step h4{font-family:'Syne',sans-serif;font-size:clamp(11px,1.1vw,13px);font-weight:700;color:#fff;letter-spacing:0.5px;margin-bottom:4px;}
+  .process-step p{font-size:clamp(10px,1vw,12px);color:rgba(255,255,255,0.5);line-height:1.4;}
+  .comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:rgba(255,255,255,0.05);}
+  .comp-col{padding:clamp(24px,3vw,40px) clamp(20px,2.5vw,32px);background:rgba(255,255,255,0.03);}
+  .comp-title{font-family:'Syne',sans-serif;font-size:clamp(10px,1vw,12px);font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:clamp(16px,2vw,24px);}
+  .comp-item{font-size:clamp(12px,1.2vw,14px);color:rgba(255,255,255,0.65);padding:clamp(10px,1.2vw,14px) 0;border-bottom:1px solid rgba(255,255,255,0.06);line-height:1.4;}
+
+  /* VALUE STACK */
+  .value-stack{background:var(--bg);padding:clamp(48px,8vw,120px) clamp(16px,5vw,56px);}
+  .tier-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,1.5vw,16px);margin:clamp(28px,3vw,48px) 0;}
+  .tier-card{background:var(--surface);border:1px solid var(--border);padding:clamp(24px,3vw,36px) clamp(20px,2.5vw,28px);position:relative;}
+  .tier-card.featured{border-color:var(--teal);border-width:2px;}
+  .tier-badge-card{position:absolute;top:-1px;right:16px;background:var(--teal);color:#fff;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;padding:3px 12px;}
+  .tier-level{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--teal);margin-bottom:8px;}
+  .tier-title{font-family:'Syne',sans-serif;font-size:clamp(22px,2.5vw,28px);font-weight:800;color:var(--dark);margin-bottom:6px;}
+  .tier-sub{font-size:clamp(12px,1.2vw,14px);color:var(--muted);margin-bottom:clamp(16px,2vw,24px);padding-bottom:clamp(16px,2vw,24px);border-bottom:1px solid var(--border);}
+  .tier-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+  .tier-list li{font-size:clamp(12px,1.2vw,14px);color:var(--text);line-height:1.4;padding-left:20px;position:relative;}
+  .tier-list li::before{content:'✓';color:var(--teal);font-weight:700;position:absolute;left:0;}
+
+  /* GUARANTEE */
+  .guarantee{background:var(--surface);padding:clamp(48px,8vw,120px) clamp(16px,5vw,56px);}
+  .guarantee-card{max-width:680px;margin:0 auto;background:rgba(14,102,85,0.05);border:2px solid var(--teal);padding:clamp(36px,5vw,72px) clamp(24px,4vw,64px);text-align:center;}
+  .guarantee-card h2{font-family:'Syne',sans-serif;font-size:clamp(26px,4.5vw,52px);font-weight:800;color:var(--dark);margin-bottom:clamp(16px,2vw,24px);line-height:1.1;}
+  .guarantee-card p{font-size:clamp(15px,1.5vw,18px);color:var(--muted);line-height:1.7;margin-bottom:clamp(10px,1.2vw,14px);}
+  .guarantee-card p strong{color:var(--dark);}
+
+  /* FINAL CTA */
+  .final-cta{background:var(--dark);padding:clamp(48px,8vw,120px) clamp(16px,5vw,56px);text-align:center;}
+  .final-cta h2{font-family:'Syne',sans-serif;font-size:clamp(28px,5vw,60px);font-weight:800;color:#fff;margin-bottom:clamp(16px,2vw,24px);line-height:1.15;}
+  .final-desc{font-size:clamp(15px,1.5vw,18px);color:rgba(255,255,255,0.6);margin:0 auto clamp(28px,3.5vw,48px);max-width:500px;line-height:1.6;}
+  .cta-form{display:flex;flex-direction:column;max-width:480px;margin:0 auto clamp(14px,1.8vw,18px);}
+  .cta-form input{padding:clamp(14px,1.6vw,18px) clamp(16px,2vw,22px);background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-bottom:none;color:#fff;font-family:'Source Serif 4',serif;font-size:15px;outline:none;}
+  .cta-form input::placeholder{color:rgba(255,255,255,0.35);}
+  .cta-form button{padding:clamp(14px,1.6vw,18px) clamp(20px,2.5vw,28px);background:var(--teal);color:#fff;border:none;font-family:'Syne',sans-serif;font-weight:700;font-size:clamp(13px,1.3vw,14px);letter-spacing:0.5px;cursor:pointer;width:100%;}
+  .cta-form button:hover{background:#0b5144;}
+  .trust-bar{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(10px,1.5vw,20px);margin-top:clamp(12px,1.5vw,18px);}
+  .trust-item{font-family:'Syne',sans-serif;font-size:clamp(11px,1.1vw,13px);color:rgba(255,255,255,0.5);}
+  .trust-item::before{content:'✓ ';color:var(--teal);font-weight:700;}
+
+  /* FAQ */
+  .faq{background:var(--bg);padding:clamp(40px,6vw,80px) clamp(16px,5vw,56px);max-width:800px;margin:0 auto;}
+  .faq-item{border-bottom:1px solid var(--border);padding:clamp(16px,2vw,24px) 0;cursor:pointer;}
+  .faq-q{font-family:'Syne',sans-serif;font-size:clamp(14px,1.4vw,16px);font-weight:700;color:var(--dark);display:flex;justify-content:space-between;align-items:center;gap:14px;}
+  .faq-q::after{content:'+';color:var(--teal);font-size:20px;flex-shrink:0;}
+  .faq-a{font-size:clamp(13px,1.3vw,15px);color:var(--muted);line-height:1.7;margin-top:12px;display:none;}
+  .faq-item.open .faq-q::after{content:'−';}
+  .faq-item.open .faq-a{display:block;}
+
+  /* FOOTER */
+  footer{background:var(--dark);padding:clamp(24px,3vw,40px) clamp(16px,5vw,56px);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;}
+  footer p{font-size:clamp(11px,1.1vw,13px);color:rgba(255,255,255,0.45);}
+  footer .logo{color:#fff;}
+
+  .fade-up{opacity:0;transform:translateY(20px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .fade-up.visible{opacity:1;transform:translateY(0);}
+
+  /* TABLET */
+  @media(max-width:960px){
+    .hero-inner{grid-template-columns:1fr;}
+    .stat-cards{flex-direction:row;flex-wrap:wrap;}
+    .stat-card{flex:1;min-width:200px;}
+    .two-col{grid-template-columns:1fr;}
+    .process-track{grid-template-columns:repeat(3,1fr);}
+    .comp-grid{grid-template-columns:1fr;}
+    .tier-cards{grid-template-columns:1fr 1fr;}
+  }
+
+  /* MOBILE */
+  @media(max-width:640px){
+    .logo sub{display:none;}
+    .nav-cta{font-size:11px;padding:8px 12px;}
+    .hero{padding-top:80px;}
+    .stat-cards{flex-direction:column;}
+    .two-col{grid-template-columns:1fr;}
+    .process-track{grid-template-columns:repeat(2,1fr);}
+    .tier-cards{grid-template-columns:1fr;}
+    .cta-form input{border-right:none;border-bottom:none;}
+    .cta-form button{width:100%;}
+    .trust-bar{flex-direction:column;align-items:center;}
+    footer{flex-direction:column;text-align:center;}
+    .comparison{overflow-x:auto;}
+  }
+  @media(max-width:400px){
+    .process-track{grid-template-columns:1fr 1fr;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Hype<span>X</span><sub>for Healthcare</sub></div>
+  <a href="#audit" class="nav-cta">Free Patient Audit →</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="clinical-badge"><span>Healthcare</span> Patient Acquisition System</div>
+      <h1 class="hero-headline">
+        Your OPD is Full.<br>
+        Your <mark>New Patient Pipeline</mark><br>
+        Is Silently Leaking.
+      </h1>
+      <p class="hero-subhead">
+        Every day your front desk misses calls, WhatsApp messages go unanswered for hours, and new patients find another clinic — <strong>before your team even sees the enquiry.</strong>
+      </p>
+      <div class="cta-block">
+        <a href="#audit" class="primary-cta">Get Free Patient Enquiry Audit — ₹0</a>
+        <div class="cta-proof">Free. 20 minutes. Zero obligation. Just the leak number.</div>
+      </div>
+    </div>
+
+    <div class="stat-cards">
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(231,76,60,0.08);">🔴</div>
+        <div>
+          <div class="stat-card-lbl">Patient enquiries missed during peak OPD</div>
+          <div class="stat-card-val" style="color:var(--alert)">38%</div>
+          <div class="stat-card-detail" style="color:var(--alert)">Average across Indian clinics</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(41,128,185,0.08);">⏱️</div>
+        <div>
+          <div class="stat-card-lbl">Time patient waits before choosing another clinic</div>
+          <div class="stat-card-val" style="color:var(--sky)">2.5 hrs</div>
+          <div class="stat-card-detail" style="color:var(--sky)">After that — they're gone</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(14,102,85,0.08);">📅</div>
+        <div>
+          <div class="stat-card-lbl">No-show reduction with automated reminders</div>
+          <div class="stat-card-val" style="color:var(--teal)">Up to 60%</div>
+          <div class="stat-card-detail" style="color:var(--teal)">LeadMatrix reminder system</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIVIDER -->
+<div class="divider-banner">
+  <div class="banner-item">Responds in under 2 minutes, 24/7</div>
+  <div class="banner-item">Automatic appointment booking</div>
+  <div class="banner-item">Pre-visit reminder sequences</div>
+  <div class="banner-item">No-show rates drop by up to 60%</div>
+  <div class="banner-item">Zero front desk effort</div>
+</div>
+
+<!-- PAIN -->
+<section class="pain" id="problem">
+  <div class="two-col">
+    <div>
+      <div class="eyebrow">The Problem</div>
+      <h2 class="section-h2">Your Front Desk Is Managing 40 Patients. <em>Not Your Pipeline.</em></h2>
+      <p class="pain-body">
+        This is not a front desk problem. It's a systems problem. Your front desk staff are doing exactly what they should — <strong>managing the patients who are already there.</strong>
+      </p>
+      <p class="pain-body">
+        The new patients enquiring simultaneously have no system receiving them. They wait. They lose patience. They call another clinic. You never find out why your new patient volume doesn't grow.
+      </p>
+    </div>
+    <div class="data-points fade-up">
+      <div class="data-point">
+        <div class="data-point-num">38%</div>
+        <div>
+          <div class="data-point-label">Missed enquiries</div>
+          <div class="data-point-text">of all new patient enquiries go unanswered during peak OPD hours</div>
+        </div>
+      </div>
+      <div class="data-point">
+        <div class="data-point-num">4–8h</div>
+        <div>
+          <div class="data-point-label">Avg response time</div>
+          <div class="data-point-text">average response lag for after-hours WhatsApp/website enquiries</div>
+        </div>
+      </div>
+      <div class="data-point">
+        <div class="data-point-num">25%</div>
+        <div>
+          <div class="data-point-label">No-show rate</div>
+          <div class="data-point-text">average no-show rate for clinics without automated reminder systems</div>
+        </div>
+      </div>
+      <div class="data-point">
+        <div class="data-point-num">0</div>
+        <div>
+          <div class="data-point-label">Data visibility</div>
+          <div class="data-point-text">most clinics have zero visibility into enquiry-to-appointment conversion rate</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MECHANISM -->
+<section class="mechanism" id="how">
+  <div class="mech-header fade-up">
+    <div class="eyebrow" style="justify-content:center;">How It Works</div>
+    <h2 class="section-h2" style="text-align:center;">LeadMatrix Handles<br>Every Patient Touchpoint<br>Before They Walk In.</h2>
+  </div>
+
+  <div class="process-track">
+    <div class="process-step fade-up">
+      <div class="process-circle">📥</div>
+      <h4>Capture</h4>
+      <p>Every enquiry from every channel — one place</p>
+    </div>
+    <div class="process-step fade-up">
+      <div class="process-circle">⚡</div>
+      <h4>Respond</h4>
+      <p>Under 2 minutes. Automatic. 24/7.</p>
+    </div>
+    <div class="process-step fade-up">
+      <div class="process-circle">🎯</div>
+      <h4>Qualify</h4>
+      <p>Type of consultation, urgency, department</p>
+    </div>
+    <div class="process-step fade-up">
+      <div class="process-circle">📅</div>
+      <h4>Book</h4>
+      <p>Appointment scheduled without front desk</p>
+    </div>
+    <div class="process-step fade-up">
+      <div class="process-circle">🔔</div>
+      <h4>Remind</h4>
+      <p>Pre-visit reminders. No-shows drop 60%.</p>
+    </div>
+  </div>
+
+  <div class="comparison fade-up" style="border-radius:16px;overflow:hidden;">
+    <div style="text-align:center;padding:40px;background:rgba(255,255,255,0.04);">
+      <div class="eyebrow" style="justify-content:center;color:rgba(255,255,255,0.5);margin-bottom:12px;">Before vs After</div>
+      <h3 style="font-size:28px;font-weight:800;color:white;">What Changes When<br>LeadMatrix Is Live</h3>
+    </div>
+    <div class="comp-grid">
+      <div class="comp-col bad">
+        <div class="comp-title" style="color:rgba(231,76,60,0.8);">❌ Without LeadMatrix</div>
+        <div class="comp-item"><span>⬤ </span>Enquiry arrives at 7 PM — seen next morning</div>
+        <div class="comp-item"><span>⬤ </span>Front desk manually calls back — often can't reach</div>
+        <div class="comp-item"><span>⬤ </span>No qualification — team treats every enquiry equally</div>
+        <div class="comp-item"><span>⬤ </span>25–30% no-show rate — no reminder system</div>
+        <div class="comp-item"><span>⬤ </span>Zero data on which channel brings most patients</div>
+        <div class="comp-item"><span>⬤ </span>Revenue leak invisible until month-end</div>
+      </div>
+      <div class="comp-col good">
+        <div class="comp-title" style="color:#2ECC71;">✓ With LeadMatrix</div>
+        <div class="comp-item"><span>⬤ </span>Enquiry at 7 PM — responded within 90 seconds</div>
+        <div class="comp-item"><span>⬤ </span>Appointment booked automatically — no call needed</div>
+        <div class="comp-item"><span>⬤ </span>Urgency and specialty qualified before human touch</div>
+        <div class="comp-item"><span>⬤ </span>Automated reminder sequence — no-shows cut by 60%</div>
+        <div class="comp-item"><span>⬤ </span>Full channel attribution in real-time dashboard</div>
+        <div class="comp-item"><span>⬤ </span>Revenue leak detected and tracked daily in ₹</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUE STACK -->
+<section class="value-stack">
+  <div class="eyebrow fade-up">What You Get</div>
+  <h2 class="section-h2 fade-up">Three Levels.<br>Every Patient Attended To.</h2>
+
+  <div class="tier-cards">
+    <div class="tier-card fade-up">
+      <div class="tier-level">Level 01</div>
+      <div class="tier-title">Visibility</div>
+      <div class="tier-sub">See every patient enquiry in one place</div>
+      <ul class="tier-list">
+        <li>Unified enquiry dashboard — all channels</li>
+        <li>Under 2-min auto-response to every enquiry</li>
+        <li>Response time tracking per channel</li>
+        <li>Revenue leak detection in ₹</li>
+        <li>Lead source performance comparison</li>
+        <li>Basic enquiry tagging and routing</li>
+      </ul>
+    </div>
+    <div class="tier-card featured fade-up">
+      <div class="tier-badge-card">Most Popular</div>
+      <div class="tier-level">Level 02</div>
+      <div class="tier-title">Control</div>
+      <div class="tier-sub">Book appointments without front desk involvement</div>
+      <ul class="tier-list">
+        <li>Everything in Visibility, plus:</li>
+        <li>Automated appointment scheduling</li>
+        <li>Pre-visit reminder sequences (no-shows ↓60%)</li>
+        <li>Specialty routing — dept/doctor specific</li>
+        <li>Post-visit follow-up automation</li>
+        <li>Multi-step patient follow-up sequences</li>
+        <li>Conversion tracking by channel</li>
+        <li>AI-personalised patient messages</li>
+      </ul>
+    </div>
+    <div class="tier-card fade-up">
+      <div class="tier-level">Level 03</div>
+      <div class="tier-title">Autonomous</div>
+      <div class="tier-sub">AI manages your patient pipeline, 24/7</div>
+      <ul class="tier-list">
+        <li>Everything in Control, plus:</li>
+        <li>24/7 AI agents — zero human trigger</li>
+        <li>OPD load forecasting</li>
+        <li>Missed patient recovery system</li>
+        <li>Returning patient recognition</li>
+        <li>Weekly AI-generated clinic intelligence report</li>
+        <li>Revenue anomaly detection</li>
+        <li>Appointment demand prediction</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="text-align:center;" class="fade-up">
+    <a href="#audit" class="primary-cta" style="display:inline-block;max-width:460px;">
+      Find Out Which Level You Need — Free Audit →
+    </a>
+  </div>
+</section>
+
+<!-- GUARANTEE -->
+<section class="guarantee">
+  <div class="guarantee-card fade-up">
+    <h2>We Show You the <em>Leak</em><br>Before You Spend Anything.</h2>
+    <p>Free Patient Enquiry Audit. 20 minutes. We map your current enquiry flow, response times, and drop-off points across all channels.</p>
+    <p>You receive one number at the end: <strong>how many patients you're losing monthly and what that costs your clinic in rupees.</strong></p>
+    <p style="color:var(--sky);font-family:'Syne',sans-serif;font-weight:700;">If the number is zero, we'll say so. Nothing to fix. If it's not — you'll know exactly what LeadMatrix fixes and what it saves.</p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="final-cta" id="audit">
+  <div class="eyebrow" style="justify-content:center;color:rgba(255,255,255,0.4);margin-bottom:24px;">Book Free Audit</div>
+  <h2>Stop Losing Patients<br>to <em>Slow Response Times.</em></h2>
+  <p class="final-desc">20 minutes. Free. A rupee number and a clear fix. No obligation.</p>
+
+  <div class="cta-form">
+    <input type="text" placeholder="Your WhatsApp number">
+    <button type="button">Book Free Audit →</button>
+  </div>
+
+  <div class="trust-bar">
+    <div class="trust-item">No credit card</div>
+    <div class="trust-item">20-minute call</div>
+    <div class="trust-item">Zero sales pressure</div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<div style="background:var(--off);">
+  <div class="faq">
+    <div class="eyebrow" style="margin-bottom:40px;">Common Questions</div>
+    <div class="faq-item">
+      <div class="faq-q">Will this work with our existing hospital management software?</div>
+      <div class="faq-a">Yes. LeadMatrix is an engagement and qualification layer that sits on top of your existing setup — not a replacement for it. We integrate with most common HMS and calendar systems. The audit call will tell you exactly what the integration looks like for your setup.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">We have a reception team. Why do we need automation?</div>
+      <div class="faq-a">Your reception team is essential — for patients who are already in front of them. LeadMatrix handles the volume that arrives while your team is occupied: after-hours WhatsApp messages, enquiries during peak OPD, overnight website form submissions. It extends your team's capacity without adding headcount.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Is patient data secure?</div>
+      <div class="faq-a">Yes. LeadMatrix is built with data security standards appropriate for healthcare. Patient information is never shared, sold, or used outside your clinic's account. Full details available in our data processing agreement, which we share before any engagement begins.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How quickly will we see a drop in no-shows?</div>
+      <div class="faq-a">Most clinics see measurable no-show reduction within the first 2 to 3 weeks of the reminder system being live. The sequence typically includes a 48-hour reminder, a 24-hour reminder, and a same-day confirmation — all automated, all trackable.</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="logo" style="color:rgba(255,255,255,0.7);font-size:20px;">HypeX</div>
+  <p>© 2025 HypeX. Revenue Operating Systems for Indian Businesses.</p>
+  <p style="color:#5DADE2;">LeadMatrix | Healthcare Clinics</p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+</script>
+</body>
+</html>
