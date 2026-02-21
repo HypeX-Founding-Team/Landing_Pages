@@ -17,6 +17,7 @@
   --ivory-dark: #EDE6D6;
   --text-body: #2A2720;
   --text-muted: #8A7D6A;
+  --ticker-height: 40px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -41,18 +42,27 @@ body::before{
 #cursor-ring{position:fixed;width:28px;height:28px;border:1px solid rgba(184,150,80,0.6);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:all .12s ease-out}
 
 /* TICKER */
-.ticker-wrap{background:var(--gold);overflow:hidden;white-space:nowrap;padding:10px 0;border-bottom:1px solid rgba(184,150,80,0.3)}
-.ticker-inner{display:inline-flex;animation:ticker 35s linear infinite}
-.ticker-inner span{font-family:'Raleway',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.15em;color:var(--ink);padding:0 40px;text-transform:uppercase}
+.ticker-wrap{background:var(--gold);overflow:hidden;white-space:nowrap;padding:10px 0;min-height:var(--ticker-height);border-bottom:1px solid rgba(184,150,80,0.3);contain:layout paint;position:relative;z-index:1}
+.ticker-inner{display:inline-flex;animation:ticker 40s linear infinite;will-change:transform;backface-visibility:hidden;transform:translateZ(0)}
+.ticker-inner span{font-family:'Raleway',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.15em;color:var(--ink);padding:0 40px;text-transform:uppercase;flex-shrink:0}
 .ticker-inner span::before{content:'✦';margin-right:16px;opacity:0.6}
-@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes ticker{0%{transform:translate3d(0,0,0)}100%{transform:translate3d(var(--ticker-dx,-50%),0,0)}}
 
 /* NAV */
 nav{
-  position:fixed;top:32px;left:0;right:0;z-index:100;
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  margin-top:var(--ticker-height);
   display:flex;align-items:center;justify-content:space-between;
   padding:0 6%;
   mix-blend-mode:normal;
+  background:transparent;
+  border-bottom:1px solid transparent;
+  transition:background 0.35s ease,border-color 0.35s ease,backdrop-filter 0.35s ease;
+}
+nav.nav--scrolled{
+  background:rgba(12,11,8,0.85);
+  border-bottom-color:rgba(184,150,80,0.15);
+  backdrop-filter:blur(8px);
 }
 .nav-logo{
   font-family:'Playfair Display',serif;
@@ -115,7 +125,9 @@ nav{
   transition:all 0.3s;border:none;cursor:none;
   display:inline-block;
 }
-.btn-primary:hover{background:var(--ivory);transform:translateY(-2px)}
+.btn-primary:hover{background:var(--ivory);transform:translateY(-2px);box-shadow:0 6px 24px rgba(184,150,80,0.25)}
+.btn-primary:focus-visible,.btn-ghost:focus-visible,.form-submit:focus-visible,.nav-cta:focus-visible,.tier-cta:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.form-input:focus-visible,.form-select:focus-visible{outline:2px solid var(--gold);outline-offset:0}
 .btn-ghost{
   font-family:'Raleway',sans-serif;font-size:12px;font-weight:600;
   letter-spacing:0.12em;text-transform:uppercase;
@@ -145,6 +157,40 @@ nav{
   background:linear-gradient(135deg,rgba(184,150,80,0.05),transparent);
   position:relative;
 }
+/* Hero load stagger */
+.hero-left .hero-reveal{
+  opacity:0;transform:translateY(24px);
+  transition:opacity 0.6s ease,transform 0.6s ease;
+}
+.hero-loaded .hero-left .hero-reveal{opacity:1;transform:translateY(0)}
+.hero-left .hero-reveal-delay-0{transition-delay:0s}
+.hero-left .hero-reveal-delay-1{transition-delay:0.15s}
+.hero-left .hero-reveal-delay-2{transition-delay:0.3s}
+.hero-left .hero-reveal-delay-3{transition-delay:0.45s}
+.hero-left .hero-reveal-delay-4{transition-delay:0.6s}
+.hero-left .hero-reveal-delay-5{transition-delay:0.75s}
+.hero-right .conv-card{
+  opacity:0;transform:translateY(20px);
+  transition:opacity 0.6s ease,transform 0.6s ease;
+  transition-delay:0.5s;
+}
+.hero-loaded .hero-right .conv-card{opacity:1;transform:translateY(0)}
+.msg-reveal,.conv-msgs .msg-time{opacity:0;transform:translateY(8px);transition:opacity 0.4s ease,transform 0.4s ease}
+.conv-card.msg-visible .msg-reveal,.conv-card.msg-visible .conv-msgs .msg-time{opacity:1;transform:translateY(0)}
+.conv-card .msg-reveal-delay-0{transition-delay:0.6s}
+.conv-card .msg-reveal-delay-1{transition-delay:0.9s}
+.conv-card .msg-reveal-delay-2{transition-delay:1.2s}
+.conv-card .msg-reveal-delay-3{transition-delay:1.5s}
+.conv-card .msg-reveal-delay-4{transition-delay:1.8s}
+.conv-card .msg-reveal-delay-5{transition-delay:2.1s}
+.conv-card .conv-msgs .msg-time:nth-child(2){transition-delay:0.6s}
+.conv-card .conv-msgs .msg-time:nth-child(4){transition-delay:0.9s}
+.conv-card .conv-msgs .msg-time:nth-child(6){transition-delay:1.2s}
+.conv-card .conv-msgs .msg-time:nth-child(8){transition-delay:1.5s}
+.conv-card .conv-msgs .msg-time:nth-child(10){transition-delay:1.8s}
+.conv-card .conv-msgs .msg-time:nth-child(12){transition-delay:2.1s}
+.conv-card .conv-badge{opacity:0;transform:translateY(8px);transition:opacity 0.4s ease 2.7s,transform 0.4s ease 2.7s}
+.conv-card.msg-visible .conv-badge{opacity:1;transform:translateY(0)}
 /* Conversation card */
 .conv-card{
   background:rgba(245,240,232,0.04);
@@ -426,8 +472,9 @@ section{padding:100px 8%;position:relative}
 .bar{
   flex:1;background:rgba(184,150,80,0.2);
   border-radius:2px 2px 0 0;
-  position:relative;transition:height 0.3s;min-height:8px;
+  position:relative;transition:height 0.8s ease-out;min-height:8px;
 }
+.bar.bar--initial{height:0!important}
 .bar.active{background:var(--gold)}
 .dash-pipeline{
   grid-column:span 4;
@@ -774,7 +821,11 @@ footer{
   width:100%;height:1px;
   background:linear-gradient(to right,transparent,var(--gold),transparent);
   margin:0;
+  transform-origin:left;
+  transition:transform 0.8s ease;
 }
+.gold-divider.fade-up{opacity:1;transform:scaleX(0)}
+.gold-divider.fade-up.visible{transform:scaleX(1)}
 
 /* MID CTA BAND */
 .cta-band{
@@ -802,6 +853,9 @@ footer{
 .fade-up-d3{transition-delay:0.3s}
 .fade-up-d4{transition-delay:0.4s}
 .fade-up-d5{transition-delay:0.5s}
+.fade-up-d6{transition-delay:0.6s}
+.fade-up-d7{transition-delay:0.7s}
+.fade-up-d8{transition-delay:0.8s}
 
 /* MOBILE */
 @media(max-width:900px){
@@ -842,6 +896,19 @@ footer{
   .hero-cta-row{flex-direction:column;align-items:stretch}
   .btn-primary,.btn-ghost{text-align:center}
 }
+
+/* REDUCED MOTION */
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .ticker-inner{animation:none}
+  .conv-badge::before{animation:none;opacity:1}
+  .fade-up,.hero-reveal,.msg-reveal,.leak-banner,.gold-divider.draw-in,.gold-divider.visible{opacity:1;transform:none;transition:none}
+  .hero-loaded .hero-reveal{opacity:1;transform:none}
+  .conv-card.msg-visible .msg-reveal,.conv-card.msg-visible .msg-time{opacity:1;transform:none}
+  .bar,.pipeline-fill{transition:none}
+  .nav{transition:none}
+  .btn-primary,.btn-ghost,.problem-card,.step-card,.result-card,.tier-card,.img-grid-item img,.vs-item{transition-duration:0.01ms}
+}
 </style>
 </head>
 <body>
@@ -874,19 +941,19 @@ footer{
 <!-- HERO -->
 <div class="hero">
   <div class="hero-left">
-    <div class="hero-eyebrow">Tours & Travel Revenue System</div>
-    <h1 class="hero-h1">
+    <div class="hero-eyebrow hero-reveal hero-reveal-delay-0">Tours & Travel Revenue System</div>
+    <h1 class="hero-h1 hero-reveal hero-reveal-delay-1">
       She booked a ₹1.8L <em>Manali package</em> at 11:42 PM.<br>
       You were asleep.
     </h1>
-    <p class="hero-sub">
+    <p class="hero-sub hero-reveal hero-reveal-delay-2">
       Every day, qualified travel buyers message you on Instagram, WhatsApp, and your website. Most never hear back fast enough. That's not a leads problem. That's a systems problem.
     </p>
-    <div class="hero-cta-row">
+    <div class="hero-cta-row hero-reveal hero-reveal-delay-3">
       <a href="#audit-form" class="btn-primary">Show Me My Revenue Leak</a>
       <a href="#how-it-works" class="btn-ghost">See How It Works</a>
     </div>
-    <div class="hero-stat">
+    <div class="hero-stat hero-reveal hero-reveal-delay-4">
       <div class="hero-stat-item">
         <span class="num">47 sec</span>
         <span class="label">Avg response time</span>
@@ -902,7 +969,7 @@ footer{
     </div>
   </div>
   <div class="hero-right">
-    <div class="conv-card fade-up">
+    <div class="conv-card">
       <div class="conv-header">
         <div class="conv-avatar">P</div>
         <div>
@@ -911,13 +978,13 @@ footer{
         </div>
       </div>
       <div class="conv-msgs">
-        <div class="msg msg-in">Hi, I'm interested in a 7-day Spiti Valley trek for 8 people. Can you share the package details and price? Dates: 14th March.</div>
+        <div class="msg msg-in msg-reveal msg-reveal-delay-0">Hi, I'm interested in a 7-day Spiti Valley trek for 8 people. Can you share the package details and price? Dates: 14th March.</div>
         <div class="msg-time">11:42 PM</div>
-        <div class="msg msg-out">Hi Priya! Great choice — Spiti in March is spectacular. Our 7N/8D Spiti Valley Expedition starts at ₹22,000/person for groups of 8+. Let me send you the complete itinerary right now 🏔️</div>
+        <div class="msg msg-out msg-reveal msg-reveal-delay-1">Hi Priya! Great choice — Spiti in March is spectacular. Our 7N/8D Spiti Valley Expedition starts at ₹22,000/person for groups of 8+. Let me send you the complete itinerary right now 🏔️</div>
         <div class="msg-time">11:43 PM ✓✓</div>
-        <div class="msg msg-in">Wow so fast! Yes please send details. Can we book a call tomorrow morning?</div>
+        <div class="msg msg-in msg-reveal msg-reveal-delay-2">Wow so fast! Yes please send details. Can we book a call tomorrow morning?</div>
         <div class="msg-time">11:44 PM</div>
-        <div class="msg msg-out">Absolutely! I've sent the full itinerary to this number. You can book a slot here → [link]. Morning slots are open. See you then! 🗓️</div>
+        <div class="msg msg-out msg-reveal msg-reveal-delay-3">Absolutely! I've sent the full itinerary to this number. You can book a slot here → [link]. Morning slots are open. See you then! 🗓️</div>
         <div class="msg-time">11:44 PM ✓✓</div>
       </div>
       <div class="conv-badge">
@@ -928,7 +995,7 @@ footer{
 </div>
 
 <!-- LEAK COUNTER -->
-<div class="leak-banner">
+<div class="leak-banner fade-up">
   <div>
     <div class="leak-label">Estimated Revenue Leaking Right Now</div>
     <div class="leak-sub">Based on avg. ₹8L/mo tour operator, 40% lead leak rate</div>
@@ -945,21 +1012,17 @@ footer{
   <h2 class="section-h2 fade-up fade-up-d1">Your clients are <em>out there,</em><br>looking for exactly what you offer.</h2>
   <p class="section-lead fade-up fade-up-d2">They're scrolling through Reels of Ladakh sunsets, WhatsApp-ing their friends about Rajasthan road trips, filling out three inquiry forms at midnight. The question isn't whether the demand exists. The question is — when they reach out to you, what happens next?</p>
   <div class="img-grid fade-up fade-up-d2">
-    <div class="img-grid-item">
-      <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80" alt="Himalayan landscape - peak travel destination">
-      <div class="img-caption">Peak Season Windows Are Short. Systems Capture All of It.</div>
+    <div class="img-grid-item fade-up fade-up-d2">
+      <img src="Peak_Season_Windows_Are_Short._Systems_Capture_All_of_It.-removebg-preview.png" alt="Peak season windows are short — systems capture all of it">
     </div>
-    <div class="img-grid-item">
-      <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=500&q=80" alt="Group adventure travel">
-      <div class="img-caption">Group Bookings = Highest Revenue Per Lead</div>
+    <div class="img-grid-item fade-up fade-up-d3">
+      <img src="Group_Bookings___Highest_Revenue_Per_Lead-removebg-preview.png" alt="Group bookings equal highest revenue per lead">
     </div>
-    <div class="img-grid-item">
-      <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=500&q=80" alt="Travel planning">
-      <div class="img-caption">Every Inquiry Deserves a Premium Response</div>
+    <div class="img-grid-item fade-up fade-up-d3">
+      <img src="Every_Inquiry_Deserves_a_Premium_Response-removebg-preview.png" alt="Every inquiry deserves a premium response">
     </div>
-    <div class="img-grid-item">
-      <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=500&q=80" alt="Digital booking system">
-      <div class="img-caption">LeadMatrix Dashboard — Your Command Center</div>
+    <div class="img-grid-item fade-up fade-up-d4">
+      <img src="LeadMatrix_Dashboard___Your_Command_Center-removebg-preview.png" alt="LeadMatrix Dashboard — Your Command Center">
     </div>
   </div>
 </section>
@@ -1077,50 +1140,50 @@ footer{
     </div>
     <div class="dash-body">
       <div class="dash-metric">
-        <div class="dash-metric-val">47</div>
+        <div class="dash-metric-val" data-count-to="47" data-suffix="">47</div>
         <div class="dash-metric-label">Active Leads This Week</div>
       </div>
       <div class="dash-metric">
-        <div class="dash-metric-val">₹8.4L</div>
+        <div class="dash-metric-val" data-count-to="8.4" data-prefix="₹" data-suffix="L">₹8.4L</div>
         <div class="dash-metric-label">Pipeline Value</div>
       </div>
       <div class="dash-metric">
-        <div class="dash-metric-val">34%</div>
+        <div class="dash-metric-val" data-count-to="34" data-suffix="%">34%</div>
         <div class="dash-metric-label">Conversion Rate</div>
       </div>
       <div class="dash-metric">
-        <div class="dash-metric-val">58s</div>
+        <div class="dash-metric-val" data-count-to="58" data-suffix="s">58s</div>
         <div class="dash-metric-label">Avg Response Time</div>
       </div>
       <div class="dash-chart">
         <div class="dash-chart-title">Weekly Bookings Confirmed</div>
         <div class="bars">
-          <div class="bar" style="height:40%"></div>
-          <div class="bar" style="height:55%"></div>
-          <div class="bar" style="height:45%"></div>
-          <div class="bar" style="height:70%"></div>
-          <div class="bar" style="height:60%"></div>
-          <div class="bar active" style="height:85%"></div>
-          <div class="bar" style="height:30%"></div>
+          <div class="bar bar--initial" style="height:40%"></div>
+          <div class="bar bar--initial" style="height:55%"></div>
+          <div class="bar bar--initial" style="height:45%"></div>
+          <div class="bar bar--initial" style="height:70%"></div>
+          <div class="bar bar--initial" style="height:60%"></div>
+          <div class="bar bar--initial active" style="height:85%"></div>
+          <div class="bar bar--initial" style="height:30%"></div>
         </div>
       </div>
       <div class="dash-chart">
         <div class="dash-chart-title">Lead Source Breakdown</div>
         <div class="bars">
-          <div class="bar active" style="height:90%"></div>
-          <div class="bar" style="height:65%"></div>
-          <div class="bar" style="height:50%"></div>
-          <div class="bar" style="height:40%"></div>
+          <div class="bar bar--initial active" style="height:90%"></div>
+          <div class="bar bar--initial" style="height:65%"></div>
+          <div class="bar bar--initial" style="height:50%"></div>
+          <div class="bar bar--initial" style="height:40%"></div>
         </div>
       </div>
       <div class="dash-pipeline">
         <div class="dash-chart-title" style="font-family:Raleway,sans-serif;font-size:11px;color:var(--gold);letter-spacing:0.12em;text-transform:uppercase">Revenue Pipeline Progress</div>
         <div class="pipeline-stages">
-          <div class="pipeline-stage"><div class="pipeline-fill" style="width:100%"></div><div class="pipeline-label">New</div></div>
-          <div class="pipeline-stage"><div class="pipeline-fill" style="width:75%"></div><div class="pipeline-label">Qualified</div></div>
-          <div class="pipeline-stage"><div class="pipeline-fill" style="width:55%"></div><div class="pipeline-label">Proposal</div></div>
-          <div class="pipeline-stage"><div class="pipeline-fill" style="width:38%"></div><div class="pipeline-label">Advance</div></div>
-          <div class="pipeline-stage"><div class="pipeline-fill" style="width:22%"></div><div class="pipeline-label">Confirmed</div></div>
+          <div class="pipeline-stage"><div class="pipeline-fill pipeline-fill--anim" style="width:0" data-width="100"></div><div class="pipeline-label">New</div></div>
+          <div class="pipeline-stage"><div class="pipeline-fill pipeline-fill--anim" style="width:0" data-width="75"></div><div class="pipeline-label">Qualified</div></div>
+          <div class="pipeline-stage"><div class="pipeline-fill pipeline-fill--anim" style="width:0" data-width="55"></div><div class="pipeline-label">Proposal</div></div>
+          <div class="pipeline-stage"><div class="pipeline-fill pipeline-fill--anim" style="width:0" data-width="38"></div><div class="pipeline-label">Advance</div></div>
+          <div class="pipeline-stage"><div class="pipeline-fill pipeline-fill--anim" style="width:0" data-width="22"></div><div class="pipeline-label">Confirmed</div></div>
         </div>
       </div>
     </div>
@@ -1131,44 +1194,44 @@ footer{
 <section>
   <div class="section-eyebrow fade-up">What You Actually Get</div>
   <h2 class="section-h2 fade-up fade-up-d1">The complete <em>value stack</em> — before we discuss price</h2>
-  <div class="value-stack fade-up fade-up-d2">
-    <div class="vs-header">
+  <div class="value-stack">
+    <div class="vs-header fade-up fade-up-d2">
       <span>What LeadMatrix Delivers</span>
       <span>Real-World Value</span>
     </div>
-    <div class="vs-item">
+    <div class="vs-item fade-up fade-up-d2">
       <div class="vs-item-name">24/7 WhatsApp Lead Capture & Auto-Response<span>Never lose an off-hours inquiry again</span></div>
       <div class="vs-item-val">₹15,000/mo</div>
     </div>
-    <div class="vs-item">
+    <div class="vs-item fade-up fade-up-d3">
       <div class="vs-item-name">15-Point Lead Scoring Engine<span>Your time goes only to serious buyers</span></div>
       <div class="vs-item-val">₹12,000/mo</div>
     </div>
-    <div class="vs-item">
+    <div class="vs-item fade-up fade-up-d3">
       <div class="vs-item-name">Automated 7-Touch Follow-Up Sequence<span>Revive cold leads on autopilot</span></div>
       <div class="vs-item-val">₹10,000/mo</div>
     </div>
-    <div class="vs-item">
+    <div class="vs-item fade-up fade-up-d4">
       <div class="vs-item-name">Booking & Calendar Automation<span>Qualified calls in your calendar daily</span></div>
       <div class="vs-item-val">₹8,000/mo</div>
     </div>
-    <div class="vs-item">
+    <div class="vs-item fade-up fade-up-d4">
       <div class="vs-item-name">Advance Payment Collection (Razorpay)<span>30% advance auto-triggered post consultation</span></div>
       <div class="vs-item-val">₹8,000/mo</div>
     </div>
-    <div class="vs-item">
+    <div class="vs-item fade-up fade-up-d5">
       <div class="vs-item-name">Revenue Analytics Dashboard<span>Know exactly where your best bookings come from</span></div>
       <div class="vs-item-val">₹6,000/mo</div>
     </div>
-    <div class="vs-item">
+    <div class="vs-item fade-up fade-up-d5">
       <div class="vs-item-name">Peak Season Overflow Handling<span>System capacity never breaks during rush</span></div>
       <div class="vs-item-val">₹10,000/mo</div>
     </div>
-    <div class="vs-total">
+    <div class="vs-total fade-up fade-up-d6">
       <span class="vs-total-label">Total Real-World Value</span>
       <span class="vs-total-val">₹69,000/mo</span>
     </div>
-    <div class="vs-price-row">
+    <div class="vs-price-row fade-up fade-up-d6">
       <span class="vs-price-label">You don't pay that</span>
       <span class="vs-price-val">₹69,000/mo</span>
     </div>
@@ -1298,6 +1361,7 @@ footer{
 </section>
 
 <!-- GUARANTEE -->
+<hr class="gold-divider fade-up" aria-hidden="true">
 <div class="guarantee-section">
   <div class="guarantee-box fade-up">
     <span class="guarantee-icon">⚲</span>
@@ -1344,24 +1408,24 @@ footer{
     <div class="section-eyebrow fade-up" style="justify-content:center">Free Revenue Leak Audit</div>
     <h2 class="section-h2 fade-up fade-up-d1" style="text-align:center">Claim your <em>free 20-minute audit.</em><br>Find out exactly what you're leaking.</h2>
     <p style="text-align:center;font-size:17px;color:rgba(245,240,232,0.6);margin-bottom:8px;font-family:Raleway,sans-serif">Takes 3 minutes to fill. We do the math.</p>
-    <form class="form-grid fade-up fade-up-d2" onsubmit="return false">
-      <div class="form-field">
+    <form class="form-grid" onsubmit="return false">
+      <div class="form-field fade-up fade-up-d2">
         <label class="form-label">Your Full Name</label>
         <input type="text" class="form-input" placeholder="Rahul Sharma">
       </div>
-      <div class="form-field">
+      <div class="form-field fade-up fade-up-d2">
         <label class="form-label">WhatsApp Number</label>
         <input type="tel" class="form-input" placeholder="+91 98765 43210">
       </div>
-      <div class="form-field">
+      <div class="form-field fade-up fade-up-d3">
         <label class="form-label">Business / Agency Name</label>
         <input type="text" class="form-input" placeholder="Mountain Trails Adventures">
       </div>
-      <div class="form-field">
+      <div class="form-field fade-up fade-up-d3">
         <label class="form-label">Email Address</label>
         <input type="email" class="form-input" placeholder="rahul@yourtours.com">
       </div>
-      <div class="form-field">
+      <div class="form-field fade-up fade-up-d4">
         <label class="form-label">Average Package Value Per Booking</label>
         <select class="form-select">
           <option value="">Select range</option>
@@ -1372,7 +1436,7 @@ footer{
           <option>Above ₹3,00,000</option>
         </select>
       </div>
-      <div class="form-field">
+      <div class="form-field fade-up fade-up-d4">
         <label class="form-label">Your Role in the Business</label>
         <select class="form-select">
           <option value="">Select your role</option>
@@ -1383,7 +1447,7 @@ footer{
           <option>Other</option>
         </select>
       </div>
-      <div class="form-field">
+      <div class="form-field fade-up fade-up-d5">
         <label class="form-label">Monthly Inquiry Volume (Approx)</label>
         <select class="form-select">
           <option value="">How many inquiries/month?</option>
@@ -1393,7 +1457,7 @@ footer{
           <option>300+</option>
         </select>
       </div>
-      <div class="form-field">
+      <div class="form-field fade-up fade-up-d5">
         <label class="form-label">Primary Inquiry Channel</label>
         <select class="form-select">
           <option value="">Where do most leads come from?</option>
@@ -1405,7 +1469,7 @@ footer{
           <option>Multiple Channels</option>
         </select>
       </div>
-      <div class="form-field full">
+      <div class="form-field full fade-up fade-up-d6">
         <label class="form-label">Which tier are you most interested in?</label>
         <select class="form-select">
           <option value="">Tell us where you'd like to start</option>
@@ -1415,7 +1479,7 @@ footer{
           <option>Not sure — show me what fits</option>
         </select>
       </div>
-      <div class="form-field full">
+      <div class="form-field full fade-up fade-up-d6">
         <button type="submit" class="form-submit">Claim My Free Revenue Leak Audit →</button>
         <p class="form-note">20-minute call. No pitch before your numbers. No obligation to proceed.</p>
       </div>
@@ -1424,7 +1488,7 @@ footer{
 </div>
 
 <!-- FOOTER -->
-<footer>
+<footer class="fade-up">
   <div>
     <div class="footer-brand">Lead<span>Matrix</span></div>
     <p style="font-family:Raleway,sans-serif;font-size:13px;color:rgba(245,240,232,0.4);margin-top:8px;max-width:320px">Revenue infrastructure for tour operators and travel companies that are ready to stop leaking bookings.</p>
@@ -1440,6 +1504,40 @@ footer{
 </footer>
 
 <script>
+// Ticker: pixel-perfect loop (measure first half width so seam is exact)
+(function(){
+  var inner=document.querySelector('.ticker-inner');
+  if(!inner)return;
+  var spans=inner.querySelectorAll('span');
+  var n=spans.length;
+  if(n<2)return;
+  var half=n/2;
+  var temp=document.createElement('div');
+  temp.setAttribute('class','ticker-inner');
+  temp.style.cssText='position:absolute;visibility:hidden;top:0;left:0;pointer-events:none';
+  for(var i=0;i<half;i++)temp.appendChild(spans[i].cloneNode(true));
+  document.body.appendChild(temp);
+  var w=temp.offsetWidth;
+  document.body.removeChild(temp);
+  inner.style.setProperty('--ticker-dx','-'+w+'px');
+})();
+
+// Hero load + conv message reveal
+setTimeout(()=>{
+  const hero=document.querySelector('.hero');
+  if(hero){hero.classList.add('hero-loaded');}
+  const convCard=document.querySelector('.conv-card');
+  if(convCard){convCard.classList.add('msg-visible');}
+},150);
+
+// Nav scroll
+const nav=document.querySelector('nav');
+if(nav){
+  const onScroll=()=>{nav.classList.toggle('nav--scrolled',window.scrollY>80);};
+  onScroll();
+  window.addEventListener('scroll',onScroll,{passive:true});
+}
+
 // Cursor
 const cursor=document.getElementById('cursor');
 const ring=document.getElementById('cursor-ring');
@@ -1454,26 +1552,56 @@ if(window.innerWidth>900){
   });
 }
 
-// Leak counter
+// Leak counter (eased start)
 let leaked=0;const rate=6.09;
 const el=document.getElementById('leakCounter');
-setInterval(()=>{
-  leaked+=rate/10;
+const leakStart=performance.now();
+const easeIn=2.5;
+function leakTick(now){
+  const t=(now-leakStart)/1000;
+  const mult=t<easeIn?0.15+0.85*(1-Math.pow(1-t/easeIn,2)):1;
+  leaked+=(rate/10)*mult;
   el.textContent='₹'+leaked.toFixed(2);
-},100);
+}
+setInterval(()=>{leakTick(performance.now());},100);
 
 // Scroll animations
 const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.12});
 document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
 
-// Bar animation on scroll
+// Dashboard: bars, pipeline (run once), metric count-up
+let dashDone=false;
 const dashObs=new IntersectionObserver((entries)=>{
   entries.forEach(e=>{
-    if(e.isIntersecting){
-      document.querySelectorAll('.pipeline-fill').forEach(f=>{const w=f.style.width;f.style.width='0';setTimeout(()=>f.style.width=w,100)});
-    }
+    if(!e.isIntersecting||dashDone)return;
+    dashDone=true;
+    const wrap=e.target;
+    wrap.classList.add('dash-visible');
+    wrap.querySelectorAll('.bar.bar--initial').forEach(b=>b.classList.remove('bar--initial'));
+    wrap.querySelectorAll('.pipeline-fill--anim').forEach(f=>{
+      const w=f.getAttribute('data-width')+'%';
+      requestAnimationFrame(()=>{f.style.width=w;});
+    });
+    wrap.querySelectorAll('.dash-metric-val[data-count-to]').forEach(el=>{
+      const to=+el.getAttribute('data-count-to');
+      const prefix=el.getAttribute('data-prefix')||'';
+      const suffix=el.getAttribute('data-suffix')||'';
+      const start=0;
+      const duration=1000;
+      const startT=performance.now();
+      function tick(now){
+        const t=Math.min((now-startT)/duration,1);
+        const eased=1-Math.pow(1-t,2);
+        const v=start+(to-start)*eased;
+        el.textContent=prefix+(Number.isInteger(to)?Math.round(v):v.toFixed(1))+suffix;
+        if(t<1)requestAnimationFrame(tick);
+        else el.textContent=prefix+(Number.isInteger(to)?to:to.toFixed(1))+suffix;
+      }
+      requestAnimationFrame(tick);
+    });
+    dashObs.disconnect();
   });
-},{threshold:0.3});
+},{threshold:0.25});
 const dw=document.querySelector('.dashboard-wrap');
 if(dw)dashObs.observe(dw);
 </script>

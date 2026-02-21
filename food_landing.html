@@ -197,19 +197,15 @@
   .alert-loc{font-size:clamp(9px,0.9vw,10px);color:var(--muted);white-space:nowrap;}
 
   /* PROBLEMS */
-  .problems{background:var(--bg);padding:clamp(48px,8vw,120px) clamp(16px,5vw,56px);}
+  .problems{background:var(--surface);padding:clamp(48px,8vw,120px) clamp(16px,5vw,56px);}
   .section-tag{font-family:'Barlow Condensed',sans-serif;font-size:clamp(10px,1vw,12px);font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--amber);margin-bottom:clamp(12px,1.5vw,20px);}
   .section-h{font-family:'Barlow Condensed',sans-serif;font-size:clamp(40px,7vw,88px);font-weight:900;line-height:0.95;text-transform:uppercase;color:var(--text);margin-bottom:clamp(32px,4vw,56px);}
   .section-h .amber{color:var(--amber);}
-  .problem-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:clamp(12px,1.5vw,20px);}
-  .problem-card:nth-child(1),.problem-card:nth-child(2){grid-column:span 3;}
-  .problem-card:nth-child(3),.problem-card:nth-child(4),.problem-card:nth-child(5),.problem-card:nth-child(6){grid-column:span 2;}
-  .problem-card{background:#0D0D0D;border:1px solid rgba(255,255,255,0.06);padding:clamp(24px,3vw,36px) clamp(20px,2.5vw,28px);border-radius:16px;display:flex;flex-direction:column;align-items:center;text-align:center;}
-  .problem-card:first-child{background:linear-gradient(135deg,rgba(34,211,238,0.25) 0%,rgba(251,146,60,0.35) 50%,rgba(234,88,12,0.3) 100%);border-color:rgba(255,255,255,0.08);}
-  .prob-icon{width:100%;height:clamp(220px,30vw,360px);margin-bottom:clamp(14px,1.8vw,20px);display:flex;align-items:center;justify-content:center;border-radius:12px;background:transparent;overflow:hidden;}
-  .prob-icon img{width:100%;height:100%;object-fit:contain;padding:clamp(10px,1.2vw,18px);}
+  .problem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+  .problem-card{background:var(--card);border:1px solid var(--border);padding:clamp(24px,3vw,36px) clamp(20px,2.5vw,28px);}
+  .prob-icon{font-size:clamp(24px,3vw,32px);margin-bottom:clamp(12px,1.5vw,16px);}
   .prob-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(16px,1.8vw,20px);font-weight:700;letter-spacing:0.5px;color:var(--text);margin-bottom:10px;}
-  .prob-body{font-size:clamp(13px,1.3vw,15px);color:rgba(255,255,255,0.85);line-height:1.6;}
+  .prob-body{font-size:clamp(13px,1.3vw,15px);color:var(--muted);line-height:1.6;}
 
   /* WHAT IT IS */
   .what-is{background:var(--bg);padding:clamp(48px,8vw,120px) clamp(16px,5vw,56px);}
@@ -540,8 +536,8 @@
       display:none;
     }
     .problem-grid{
-      grid-template-columns:repeat(6,1fr);
-      gap:clamp(12px,1.5vw,20px);
+      grid-template-columns:repeat(2,1fr);
+      gap:2px;
     }
     .what-inner{
       grid-template-columns:1fr;
@@ -627,16 +623,13 @@
     }
     .problem-grid{
       grid-template-columns:1fr;
-      gap:clamp(12px,1.5vw,20px);
-    }
-    .problem-card:nth-child(1),.problem-card:nth-child(2),.problem-card:nth-child(3),.problem-card:nth-child(4),.problem-card:nth-child(5),.problem-card:nth-child(6){
-      grid-column:span 1;
+      gap:2px;
     }
     .problem-card{
       padding:clamp(20px,2.5vw,28px) clamp(16px,2vw,20px);
     }
     .prob-icon{
-      height:clamp(180px,45vw,260px);
+      font-size:clamp(20px,2.5vw,28px);
       margin-bottom:clamp(10px,1.2vw,14px);
     }
     .prob-title{
@@ -1059,32 +1052,32 @@
 
   <div class="problem-grid">
     <div class="problem-card fade-up">
-      <div class="prob-icon"><img src="Whatsapp_OS.png" alt="WhatsApp Is Not an OS"></div>
+      <div class="prob-icon">📱</div>
       <div class="prob-title">WhatsApp Is Not an OS</div>
       <div class="prob-body">Inventory updates, sales numbers, staff issues — all in WhatsApp groups. Information is delayed, informal, and impossible to act on systematically. You're running a business on a messaging app.</div>
     </div>
     <div class="problem-card fade-up">
-      <div class="prob-icon"><img src="Invisible_Margin_Leak.png" alt="Invisible Margin Leaks"></div>
+      <div class="prob-icon">📊</div>
       <div class="prob-title">Invisible Margin Leaks</div>
       <div class="prob-body">Food waste, over-ordering, pricing gaps, vendor inefficiency — you don't see any of it until month-end. By then, thousands of rupees have leaked silently across multiple locations.</div>
     </div>
     <div class="problem-card fade-up">
-      <div class="prob-icon"><img src="One_Location_Drags_the_Rest.png" alt="One Location Drags the Rest"></div>
+      <div class="prob-icon">🏪</div>
       <div class="prob-title">One Location Drags the Rest</div>
       <div class="prob-body">One underperforming outlet reduces overall profitability. You know something's wrong. You don't know exactly what or where — because you're looking at aggregated numbers, not location intelligence.</div>
     </div>
     <div class="problem-card fade-up">
-      <div class="prob-icon"><img src="Inventory_Managed_by_Guesswork.png" alt="Inventory Managed by Guesswork"></div>
+      <div class="prob-icon">📦</div>
       <div class="prob-title">Inventory Managed by Guesswork</div>
       <div class="prob-body">You find out you're out of stock when a manager calls. You find out you've over-ordered when it expires. Both cost you money. Neither is visible before the damage is done.</div>
     </div>
     <div class="problem-card fade-up">
-      <div class="prob-icon"><img src="Expansion_Feels_Dangerous.png" alt="Expansion Feels Dangerous"></div>
+      <div class="prob-icon">🚀</div>
       <div class="prob-title">Expansion Feels Dangerous</div>
       <div class="prob-body">You want to open another outlet. But you can't confidently replicate what's working — because you're not sure exactly what is working. Expansion without intelligence is just adding more chaos.</div>
     </div>
     <div class="problem-card fade-up">
-      <div class="prob-icon"><img src="Operations_Depend_on _You.png" alt="Operations Depend on You"></div>
+      <div class="prob-icon">👤</div>
       <div class="prob-title">Operations Depend on You</div>
       <div class="prob-body">When you're not watching, execution drifts. Standards slip. Numbers suffer. Your business runs better when you're present — which means you can't scale without replicating yourself. That's a systems problem.</div>
     </div>
