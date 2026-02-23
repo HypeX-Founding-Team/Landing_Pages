@@ -17,7 +17,7 @@
   --ivory-dark: #EDE6D6;
   --text-body: #2A2720;
   --text-muted: #8A7D6A;
-  --ticker-height: 40px;
+  --ticker-height: 32px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -42,7 +42,7 @@ body::before{
 #cursor-ring{position:fixed;width:28px;height:28px;border:1px solid rgba(184,150,80,0.6);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:all .12s ease-out}
 
 /* TICKER */
-.ticker-wrap{background:var(--gold);overflow:hidden;white-space:nowrap;padding:10px 0;min-height:var(--ticker-height);border-bottom:1px solid rgba(184,150,80,0.3);contain:layout paint;position:relative;z-index:1}
+.ticker-wrap{background:var(--gold);overflow:hidden;white-space:nowrap;padding:0.5px 0;min-height:var(--ticker-height);border-bottom:1px solid rgba(184,150,80,0.3);contain:layout paint;position:relative;z-index:1}
 .ticker-inner{display:inline-flex;animation:ticker 40s linear infinite;will-change:transform;backface-visibility:hidden;transform:translateZ(0)}
 .ticker-inner span{font-family:'Raleway',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.15em;color:var(--ink);padding:0 40px;text-transform:uppercase;flex-shrink:0}
 .ticker-inner span::before{content:'✦';margin-right:16px;opacity:0.6}
@@ -74,7 +74,7 @@ nav.nav--scrolled{
   font-family:'Raleway',sans-serif;font-size:12px;font-weight:600;
   letter-spacing:0.15em;text-transform:uppercase;
   border:1px solid var(--gold);color:var(--gold);
-  padding:10px 24px;text-decoration:none;
+  padding:2px 10px;text-decoration:none;
   transition:all 0.3s;
 }
 .nav-cta:hover{background:var(--gold);color:var(--ink)}
